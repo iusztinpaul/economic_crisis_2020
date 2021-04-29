@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import List, Dict
 
 import yfinance as yf
@@ -39,6 +40,8 @@ EXTRACTION_TREE = {
 
 
 def export_csv(tickers: List[str], storage_path: str):
+    Path(storage_path).mkdir(parents=True, exist_ok=True)
+
     data = dict()
     for ticker in tqdm(tickers):
         ticker_data = extract_data(ticker, EXTRACTION_TREE)

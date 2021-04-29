@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import List
 
 import yfinance as yf
@@ -7,6 +8,8 @@ from utils import get_sp500_tickers
 
 
 def export_prices(tickers: List[str], storage_path: str):
+    Path(storage_path).mkdir(parents=True, exist_ok=True)
+
     data = yf.download(
         ' '.join(tickers),
         start="2016-01-01",
