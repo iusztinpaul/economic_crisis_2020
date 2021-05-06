@@ -13,6 +13,10 @@ import src.utils as utils
 def box_plot_balance_sheet(data: Dict[str, pd.DataFrame], columns: list):
     # TODO: Find a better way to scale the values ( now it is too cluttered)
     # TODO: Find a better way to display the legend / to display the sectors
+    # TODO: Preprocess nan values ( VERY IMPORTANT)
+    # TODO: Display tickers that are outliers in the box plots.
+    # TODO: Drop year 2021 when downloading data
+    # TODO: Maybe add friendlier column names on downloading point.
 
     min_max_scaler = preprocessing.MinMaxScaler()
 
@@ -51,6 +55,7 @@ def box_plot_balance_sheet(data: Dict[str, pd.DataFrame], columns: list):
     )
 
     # TODO: Why is this working ?
+    # TODO: Keep tickers as indexes if possible
     df = df.reset_index(level=0, drop=True).sort_index().reset_index()
 
     for column in box_plot_columns:
