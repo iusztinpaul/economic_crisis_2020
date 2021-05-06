@@ -4,7 +4,7 @@ from typing import List
 
 import yfinance as yf
 
-from utils import get_sp500_tickers
+from src.utils import get_sp500_tickers
 
 
 def export_prices(tickers: List[str], storage_path: str):
@@ -12,7 +12,7 @@ def export_prices(tickers: List[str], storage_path: str):
 
     data = yf.download(
         ' '.join(tickers),
-        start="2016-01-01",
+        start="2017-01-01",
         end="2021-01-01",
         threads=True,
         interval='1d'

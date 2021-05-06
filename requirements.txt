@@ -3,3 +3,6 @@ pandas==1.2.4
 beautifulsoup4==4.9.3
 tqdm==4.59.0
 requests~=2.25.1
+matplotlib==3.4.1
+sklearn==1.6.3
+seaborn==0.11.1
