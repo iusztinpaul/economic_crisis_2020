@@ -7,7 +7,7 @@ import pandas as pd
 
 from tqdm import tqdm
 
-from src.utils import get_sp500_tickers
+from src.data import get_sp500_tickers
 
 EXTRACTION_TREE = {
     'balancesheet/year': (

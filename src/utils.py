@@ -1,39 +1,30 @@
-import glob
-import os
 from typing import Dict, List
 
-import bs4 as bs
 import numpy as np
 import pandas as pd
-import requests
 
 
-def get_sp500_tickers():
-    resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
-    soup = bs.BeautifulSoup(resp.text, 'lxml')
-    table = soup.find('table', {'class': 'wikitable sortable'})
-    tickers = []
-    for row in table.findAll('tr')[1:]:
-        ticker = row.findAll('td')[0].text.strip('\n ')
-        tickers.append(ticker)
-
-    return sorted(tickers)
+def is_row_notna(df: pd.DataFrame) -> pd.Series:
+    return df.notna().sum(axis=1) == len(df.columns)
 
 
-def load_data(storage_dir: str) -> dict:
-    data = dict()
-    for file in glob.glob(os.path.join(storage_dir, '*.csv')):
-        file_name = os.path.basename(file).split('.')[0]
-        if 'prices' not in file_name:
-            data[file_name] = pd.read_csv(file, index_col='Ticker')
-        else:
-            data['prices'] = pd.read_csv(file)
+def get_col_nan_statistics(data: Dict[str, pd.DataFrame]):
+    metrics = dict()
+    for name, df in data.items():
+        if is_number(name):
+            per_col_nans = df.isna().sum(axis=0)
+            for column in df.columns:
+                if column not in metrics:
+                    metrics[column] = [per_col_nans[column]]
+                else:
+                    metrics[column].append(per_col_nans[column])
 
-    for file_name, df in data.items():
-        if is_number(file_name):
-            data[file_name] = pd.concat([data[file_name], data['info']], axis=1)
+    metrics = pd.DataFrame(metrics)
+    metrics = metrics.mean().sort_values(ascending=False)
+    metrics = metrics[metrics > metrics.mean()]
+    print(f'Top columns with most nan values are [(Column name, nan mean values)]:\n{metrics}')
 
-    return data
+    return metrics.index.values
 
 
 def is_number(string: str) -> bool:

@@ -7,6 +7,7 @@ import seaborn as sns
 
 from sklearn import preprocessing
 
+import src.data
 import src.utils as utils
 
 
@@ -21,9 +22,9 @@ def box_plot_balance_sheet(data: Dict[str, pd.DataFrame], columns: list):
     min_max_scaler = preprocessing.MinMaxScaler()
 
     years = utils.extract_years_from(data)
-    tickers = data['info'].index
+    tickers = data['2020'].index
     box_plot_columns = columns
-    columns = columns + data['info'].columns.values.tolist()
+    columns = columns + data['2020'].columns.values.tolist()
     initial_sectors = None
     acronym_sectors = None
 
@@ -31,8 +32,8 @@ def box_plot_balance_sheet(data: Dict[str, pd.DataFrame], columns: list):
     for year in years:
         year_df = data[year].copy()
         if initial_sectors is None:
-            initial_sectors = np.unique(year_df['sector'].dropna().values)
-        year_df['sector'] = year_df['sector'].apply(utils.compute_acronym)
+            initial_sectors = np.unique(year_df['Sector'].values)
+        year_df['Sector'] = year_df['Sector'].apply(utils.compute_acronym)
         if acronym_sectors is None:
             acronym_sectors = [utils.compute_acronym(sector) for sector in initial_sectors]
         year_df[box_plot_columns] = min_max_scaler.fit_transform(year_df[box_plot_columns].values)
@@ -60,7 +61,7 @@ def box_plot_balance_sheet(data: Dict[str, pd.DataFrame], columns: list):
 
     for column in box_plot_columns:
         box_plot = sns.boxplot(
-            x='sector',
+            x='Sector',
             y=column,
             hue='year',
             data=df,
@@ -72,10 +73,10 @@ def box_plot_balance_sheet(data: Dict[str, pd.DataFrame], columns: list):
 
 
 if __name__ == '__main__':
-    data = utils.load_data('./data')
+    data = src.data.load_data('./data')
     box_plot_balance_sheet(
         data,
-        columns=['Total Liab', 'Total Stockholder Equity', 'Total Assets'],
+        columns=['Total Liabilities', 'Total Equity', 'Total Assets'],
     )
 
 
