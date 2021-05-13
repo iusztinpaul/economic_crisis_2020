@@ -39,7 +39,7 @@ def compute_acronym(string: str) -> str:
     if not string or (not isinstance(string, str) and np.isnan(string)):
         return ''
 
-    return ''.join(e[0] for e in string.split())
+    return '.'.join(e[0] for e in string.split()) + '.'
 
 
 def extract_years_from(data: Dict[str, pd.DataFrame]) -> List[str]:
