@@ -112,3 +112,8 @@ def get_columns(extraction_tree: dict):
 if __name__ == '__main__':
     tickers = get_sp500_tickers()
     export_csv(tickers, 'data/')
+
+    try:
+        os.remove('data/2021.csv')
+    except:
+        print('Could not remove 2021.csv!')

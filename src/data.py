@@ -48,7 +48,12 @@ def load_data(storage_dir: str) -> dict:
             else:
                 data[file_name] = data[file_name].rename(columns=FUNDAMENTALS_RENAME_MAPPINGS[file_name])
         else:
-            data['prices'] = pd.read_csv(file)
+            data['prices'] = pd.read_csv(file, skiprows=[0, 2])
+            columns = data['prices'].columns
+            data['prices'].rename(columns={columns[0]: 'Date'}, inplace=True)
+            data['prices'].set_index('Date', inplace=True)
+            data['prices'].fillna('bfill', inplace=True, axis=1)
+            data['prices'].fillna('ffill', inplace=True, axis=1)
 
     info_data = data.pop('info')
     num_rows = len(info_data.index)

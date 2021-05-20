@@ -42,6 +42,13 @@ def compute_acronym(string: str) -> str:
     return '.'.join(e[0] for e in string.split()) + '.'
 
 
+def every_word_on_different_line(string: str) -> str:
+    if not string or (not isinstance(string, str) and np.isnan(string)):
+        return ''
+
+    return '\n'.join(string.split(' '))
+
+
 def extract_years_from(data: Dict[str, pd.DataFrame]) -> List[str]:
     years = []
     for name, df in data.items():
