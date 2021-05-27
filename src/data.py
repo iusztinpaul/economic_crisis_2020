@@ -1,5 +1,6 @@
 import glob
 import os
+from typing import Tuple
 
 import bs4 as bs
 import pandas as pd
@@ -34,7 +35,7 @@ FUNDAMENTALS_RENAME_MAPPINGS = {
 }
 
 
-def load_data(storage_dir: str) -> dict:
+def load_data(storage_dir: str) -> Tuple[dict, pd.DataFrame]:
     data = dict()
     all_tickers = set()
     valid_data_mask = None
@@ -87,7 +88,16 @@ def load_data(storage_dir: str) -> dict:
         if 'prices' not in file_name:
             data[file_name] = data[file_name][valid_data_mask]
 
-    return data
+    # Keep prices only for valid tickers.
+    valid_tickers = data['2020'].index
+    data['prices'] = data['prices'].transpose()
+    data['prices'] = data['prices'].loc[valid_tickers]
+    data['prices'] = data['prices'].transpose()
+
+    # Keep info only for valid tickers.
+    info_data = info_data.loc[valid_tickers]
+
+    return data, info_data
 
 
 def get_sp500_tickers():
