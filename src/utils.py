@@ -49,6 +49,13 @@ def every_word_on_different_line(string: str) -> str:
     return '\n'.join(string.split(' '))
 
 
+def get_first_word(string: str) -> str:
+    if not string or (not isinstance(string, str) and np.isnan(string)):
+        return ''
+
+    return string.split(' ')[0]
+
+
 def extract_years_from(data: Dict[str, pd.DataFrame]) -> List[str]:
     years = []
     for name, df in data.items():

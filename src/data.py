@@ -53,8 +53,8 @@ def load_data(storage_dir: str) -> Tuple[dict, pd.DataFrame]:
             columns = data['prices'].columns
             data['prices'].rename(columns={columns[0]: 'Date'}, inplace=True)
             data['prices'].set_index('Date', inplace=True)
-            data['prices'].fillna('bfill', inplace=True, axis=1)
-            data['prices'].fillna('ffill', inplace=True, axis=1)
+            data['prices'].fillna(method='bfill', inplace=True, axis=1)
+            data['prices'].fillna(method='ffill', inplace=True, axis=1)
 
     info_data = data.pop('info')
     num_rows = len(info_data.index)
