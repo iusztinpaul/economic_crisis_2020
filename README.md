@@ -3,6 +3,10 @@
 pip install -r requirements.txt
 ```
 
+
+# Docs
+* See `visualize.ipynb` jupyter notebook
+
 # Download data
 ### Prices
 ```shell
