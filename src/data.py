@@ -6,7 +6,7 @@ import bs4 as bs
 import pandas as pd
 import requests
 
-from src import utils
+import src.utils as utils
 from src.utils import is_number
 
 FUNDAMENTALS_RENAME_MAPPINGS = {

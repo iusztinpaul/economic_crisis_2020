@@ -4,7 +4,7 @@ from typing import List
 
 import yfinance as yf
 
-from src.data import get_sp500_tickers
+from src import data
 
 
 def export_prices(tickers: List[str], storage_path: str):
@@ -25,5 +25,5 @@ def export_prices(tickers: List[str], storage_path: str):
 
 
 if __name__ == '__main__':
-    tickers = get_sp500_tickers()
+    tickers = data.get_sp500_tickers()
     export_prices(tickers, './data')

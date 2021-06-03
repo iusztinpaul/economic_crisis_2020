@@ -5,8 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import src.data
-import src.utils as utils
+from src import data
+from src import utils
 
 
 def plot_sectors(data: Dict[str, pd.DataFrame], columns: list, show_barplot: bool = False, show_outliers: bool = False):
@@ -85,52 +85,52 @@ def plot_sectors(data: Dict[str, pd.DataFrame], columns: list, show_barplot: boo
             plt.tight_layout()
             plt.show()
 
-        if show_outliers:
-            qualitative_colors = sns.color_palette("Set3", 10)
-            color_mappings = {
-                'Communication\nServices': qualitative_colors[0],
-                'Consumer\nCyclical': qualitative_colors[1],
-                'Consumer\nDefensive': qualitative_colors[2],
-                'Energy': qualitative_colors[3],
-                'Financial\nServices': qualitative_colors[4],
-                'Healthcare': qualitative_colors[5],
-                'Industrials': qualitative_colors[6],
-                'Technology': qualitative_colors[7],
-                'Basic\nMaterials': qualitative_colors[8],
-                'Utilities': qualitative_colors[9]
-            }
-            fig, ax = plt.subplots(nrows=1, ncols=len(box_plot_columns))
-            for i, column in enumerate(box_plot_columns):
-                outliers[column]['count'] = outliers[column]['count'].sort_index()
-                colors = [color_mappings[sector] for sector in outliers[column]['count'].index.values]
-                ax[i].pie(
-                    outliers[column]['count'],
-                    startangle=90,
-                    wedgeprops={'edgecolor': 'black'},
-                    shadow=True,
-                    radius=1.2,
-                    labels=outliers[column]['count'].index,
-                    colors=colors,
-                    explode=[0.0125 for _ in range(len(outliers[column]['count'].index))]
-                )
-                ax[i].axis('equal')
-                ax[i].set_title(column, fontweight='bold', fontsize=20)
+    if show_outliers:
+        qualitative_colors = sns.color_palette("Set3", 10)
+        color_mappings = {
+            'Communication\nServices': qualitative_colors[0],
+            'Consumer\nCyclical': qualitative_colors[1],
+            'Consumer\nDefensive': qualitative_colors[2],
+            'Energy': qualitative_colors[3],
+            'Financial\nServices': qualitative_colors[4],
+            'Healthcare': qualitative_colors[5],
+            'Industrials': qualitative_colors[6],
+            'Technology': qualitative_colors[7],
+            'Basic\nMaterials': qualitative_colors[8],
+            'Utilities': qualitative_colors[9]
+        }
+        fig, ax = plt.subplots(nrows=1, ncols=len(box_plot_columns))
+        for i, column in enumerate(box_plot_columns):
+            outliers[column]['count'] = outliers[column]['count'].sort_index()
+            colors = [color_mappings[sector] for sector in outliers[column]['count'].index.values]
+            ax[i].pie(
+                outliers[column]['count'],
+                startangle=90,
+                wedgeprops={'edgecolor': 'black'},
+                shadow=True,
+                radius=1.2,
+                labels=outliers[column]['count'].index,
+                colors=colors,
+                explode=[0.0125 for _ in range(len(outliers[column]['count'].index))]
+            )
+            ax[i].axis('equal')
+            ax[i].set_title(column, fontweight='bold', fontsize=20)
 
-            plt.tight_layout()
-            plt.show()
+        plt.tight_layout()
+        plt.show()
 
     return outliers
 
 
 if __name__ == '__main__':
-    storage_path = os.path.join(os.path.dirname(__file__), '..', 'data')
-    data, info = src.data.load_data(storage_path)
+    storage_path = os.path.join(os.path.dirname(__file__), '', '../data')
+    data, info = data.load_data(storage_path)
 
     income_statement_outliers = plot_sectors(
         data,
         columns=['Revenue', 'Net Income'],
-        show_barplot=False,
-        show_outliers=False
+        show_barplot=True,
+        show_outliers=True
     )
     balance_sheet_outliers = plot_sectors(
         data,

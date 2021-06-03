@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import src.data
+from src import data
 from src import utils
 
 
@@ -159,11 +159,11 @@ def plot_tickers(prices: pd.DataFrame, tickers: List[List[str]], show=False):
 
 
 if __name__ == '__main__':
-    data, info = src.data.load_data('../data')
+    data, info = data.load_data('../data')
 
     # Plot mean prices.
     plot_mean_prices(data['prices'], show=False)
-    plot_mean_prices_by_sector(data['prices'], info, show=False)
+    plot_mean_prices_by_sector(data['prices'], info, show=True)
 
     # Plot statistics.
     plot_price_per_earning_by_sector(data, info, show=False)
@@ -171,4 +171,4 @@ if __name__ == '__main__':
 
     # Plot best & least performing tickers.
     stats_dict = plot_best_performing_assets(data['prices'], show=False)
-    plot_tickers(data['prices'], tickers=[stats_dict['best'], stats_dict['least']], show=True)
+    plot_tickers(data['prices'], tickers=[stats_dict['best'], stats_dict['least']], show=False)
